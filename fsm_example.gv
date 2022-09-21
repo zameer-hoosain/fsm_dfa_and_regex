@@ -1,0 +1,11 @@
+digraph vending_finite_state_machine {
+	fontname="Helvetica,Arial,sans-serif"
+	node [fontname="Helvetica,Arial,sans-serif"]
+	edge [fontname="Helvetica,Arial,sans-serif"]
+	rankdir=LR;
+	node [shape = circle];
+	Start -> Idle [label = "Initialize"];
+	Idle -> "Wait for selection" [label = "Money Inserted"];
+    "Wait for selection" -> Dispense [label = "Item Selected"];
+    Dispense -> Idle [label = "Item Dispensed"];
+}
