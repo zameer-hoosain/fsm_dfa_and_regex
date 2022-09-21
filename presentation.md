@@ -21,16 +21,17 @@ styles:
 
 # Finite State Machines
 
+- A Simple computational model
 - State represents the entirety of what is needed for the system to work
 - Finite number of states
 - One start state
 - States are connected using transitions
-- May have one or more "accepting" states
+- May have one or more "accepting/terminating" states
   - Not a requirement for machines designed to run indefinitely
 
 ## Vending Machine Example:
 
-![15](./fsm_example.png)
+![15](./fsm_example.gv.png)
 
 ---
 
@@ -46,11 +47,16 @@ styles:
 
 ---
 
-# Conway's Game of Life
-
----
-
 # String processing with DFAs
+
+- Deterministic Finite Automata (DFA) are simple Finite State Machines
+- In a DFA a system can only exist in a single state at a time
+- Each DFA has 5 essential properties:
+  - `Q` - A finite set of all states
+  - `Σ` - A finite set of all valid input symbols (the alphabet)
+  - `δ: Q X Σ -> Q` - A transition function that goes from state to state given a symbol from the alphabet
+  - `q₀ ∈ Q` A starting state (one of the states in `Q`)
+  - `F ⊆ Q` A finite set of all accepting states (A subset of `Q`)
 
 ---
 
