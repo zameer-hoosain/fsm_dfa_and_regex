@@ -57,22 +57,65 @@ styles:
   - `δ: Q X Σ -> Q` - A transition function that goes from state to state given a symbol from the alphabet
   - `q₀ ∈ Q` A starting state (one of the states in `Q`)
   - `F ⊆ Q` A finite set of all accepting states (A subset of `Q`)
+- For our purposes we will only explicitly note the states, starting state and final state. Assume that the alphabet is the entire ascii table unless otherwise specified.
 
 ---
 
 # DFA Example: Even binary numbers
 
+Consider a DFA with the following:
+
+`Q` = [A, B, C]
+
+`Σ` = 0, 1
+
+`q₀` = A
+
+`F` = [B]
+
+Drawn as:
+![15](./even_binary_dfa-1.gv.png)
+
+Let's go through what happens when that DFM is fed an input of `1010`.
+
 ---
 
-# Some notation for the next few examples
+## **1**010
 
-Symbol:
+![25](./even_binary_dfa-2.gv.png)
 
-Alternation:
+---
 
-Concatenation:
+## 1**0**10
 
-Repetition:
+![25](./even_binary_dfa-3.gv.png)
+
+---
+
+## 10**1**0
+
+![25](./even_binary_dfa-4.gv.png)
+
+---
+
+
+## 101**0**
+
+![25](./even_binary_dfa-5.gv.png)
+
+---
+
+# Some syntax for the next few examples
+
+When showing the input that transition functions accept going forward, we can use the following
+syntax to make things easier to read:
+
+| Name          | Syntax             | Explanation                                    |
+| ------------- | ------------------ | ---------------------------------------------- |
+| Symbol        | a, b, c, 0, 1 etc. | Matches the exact character\*                  |
+| Alternation   | a\|b               | Matches either a or b                          |
+| Concatenation | ab                 | Matched exactly a followed by b                |
+| Repetition    | a\*                | Matches the preceeding symbol 0 or more times. |
 
 ---
 
