@@ -297,7 +297,7 @@ Before we answer that, let's look into the basic notation of regular expressions
 Something to keep in mind is that regexes still process each symbol one at a time, just like DFAs,
 so don't be intimidated by long and complex expressions.
 
-`[Hh]el[^a-km-z]o!?` still matches `Hello!` no matter how complex it is.
+`[Hh]el[^a-km-z]o!?` still matches `Hello!` no matter how complex it is or looks.
 
 ---
 
