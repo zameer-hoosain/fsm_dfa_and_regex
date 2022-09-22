@@ -1,0 +1,57 @@
+digraph lexer_separate {
+    size = "50";
+	fontname="Helvetica,Arial,sans-serif"
+	node [fontname="Helvetica,Arial,sans-serif"]
+	edge [fontname="Helvetica,Arial,sans-serif"]
+    rankdir=TB;
+    node [shape = doublecircle]; C E G J L P;
+    node [shape = circle];
+    
+
+    subgraph cluster_if_subgraph {
+        label = "if";
+        Start1 -> A;
+        A -> B [label = "i"];
+        B -> C [label = "f"];
+        Start1 [shape = none label = "Start"]; 
+    }
+
+    subgraph cluster_id_subgraph {
+        label = "Identifier";
+        Start2 -> D;
+        D -> E [label = "a-z"];
+        E -> E [label = "a-z"];
+        E -> E [label = "0-9"];
+        Start2 [shape = none label = "Start"]; 
+    }
+
+    subgraph cluster_integer_subgraph {
+        label = "Integers";
+        Start3 -> F;
+        F -> G [label = "0-9"];
+        G -> G [label = "0-9"];
+        Start3 [shape = none label = "Start"]; 
+    }
+
+    subgraph cluster_real_subgraph {
+        label = "Reals";
+        Start4 -> H;
+        H -> I [label = "0-9"];
+        I -> I [label = "0-9"];
+        I -> J [label = "."];
+        J -> J [label = "0-9"];
+        Start4 [shape = none label = "Start"]; 
+    }
+
+    subgraph cluster_whitespace_subgraph {
+        label = "Whitespace/Comments";
+        Start5 -> K;
+        K -> L [label = "space, tab etc."];
+        L -> L [label = "space, tab etc."];
+        K -> M [label = "/"];
+        M -> N [label = "/"];
+        N -> O [label = "a-z, space or 0-9"];
+        O -> P [label = "\\n"];
+        Start5 [shape = none label = "Start"]; 
+    }
+}

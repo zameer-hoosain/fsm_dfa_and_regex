@@ -1,0 +1,41 @@
+digraph lexer_separate {
+    size = "50";
+	fontname="Helvetica,Arial,sans-serif"
+	node [fontname="Helvetica,Arial,sans-serif"]
+	edge [fontname="Helvetica,Arial,sans-serif"]
+    rankdir=LR;
+    node [shape = doublecircle]; B C D E F G H J K L;
+    node [shape = circle];
+
+    Start -> A;
+    A -> B [label = "i"];
+    B -> C [label = "f"];
+    B -> D [label = "a-e, g-z or 0-9"];
+    C -> D [label = "a-z or 0-9"];
+    D -> D [label = "a-z"];
+    D -> D [label = "0-9"];
+    A -> D [label = "a-h or j-z"];
+    A -> E [label = "0-9"];
+    E -> E [label = "0-9"];
+    E -> F [label = "."];
+    F -> G [label = "0-9"];
+    G -> G [label = "0-9"];
+    A -> H [label = "/"];
+    H -> I [label = "/"];
+    I -> I [label = "a-z, spaces or 0-9"];
+    I -> J [label = "\\n"];
+    A -> K [label = "space, tab, etc."];
+    K -> K [label = "space, tab, etc."];
+    A -> L [label = "other"];
+    Start [shape = none label = "Start"]; 
+    B [xlabel="ID" color="lightblue"];
+    C [xlabel="IF" color="blue"];
+    D [xlabel="ID" color="lightblue"];
+    E [xlabel="INT" color="purple"];
+    F [xlabel="ERR" color="red"];
+    G [xlabel="REAL" color="orange"];
+    H [xlabel="ERR" color="red"];
+    J [xlabel="W/C" color="brown"];
+    K [xlabel="W/C" color="brown"];
+    L [xlabel="ERR" color="red"];
+}

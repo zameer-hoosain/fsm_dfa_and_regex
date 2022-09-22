@@ -1,3 +1,3 @@
 #!/bin/bash
 
-dot -Tpng -O *.gv
+dot -Tpng -Gdpi=300 -O *.gv
