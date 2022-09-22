@@ -47,7 +47,7 @@ styles:
 
 # What can't they be used for?
 
-- Inflexible state transitions
+- Flexible state transitions
 - Storing state (ironically)
   - Unsuitable for parsers
 - Systems with large amounts of states quickly become difficult to manage
@@ -57,6 +57,8 @@ styles:
 # String processing with DFAs
 
 - Deterministic Finite Automata (DFA) are simple Finite State Machines
+- They are deterministic because they can only transition to one state for a given input.
+  - Differ from NFAs in thie respect
 - In a DFA a system can only exist in a single state at a time
 - Each DFA has 5 essential properties:
   - `Q` - A finite set of all states
@@ -83,7 +85,7 @@ As an example we have a DFA that matches all even binary numbers (eg. 0, 10, 110
 Drawn as:
 ![15](graphs/even_binary_dfa-1.gv.png)
 
-Let's go through what happens when that DFM is fed an input of `1010`.
+Let's go through what happens when that DFA is fed an input of `1010`.
 
 ---
 
@@ -269,26 +271,10 @@ language is as follows:
 - A **word** (string) is defined as one or more **symbols** from the **alphabet**.
 - A **regular language** is one that can be recognized by a finite automata.
 
-## Okay but why do we care?
+## Okay, but why do we care?
 - A **regular expression** is a notation to describe a set of **words** in a **language**.
 - If a **language** can be defined by a **regular expresssion** then it is a **regular language**.
 - This means that there must be a link between regular expressions and finite automata, right?
-
----
-
-
-# Some syntax for the next few examples
-
-When showing the input that transition functions accept going forward, we can use the following
-syntax to make things easier to read:
-
-| Name          | Syntax             | Explanation                                         |
-| ------------- | ------------------ | --------------------------------------------------- |
-| Symbol        | a, b, c, 0, 1 etc. | Matches the exact character\*                       |
-| Alternation   | a\|b               | Matches either a or b                               |
-| Ranges        | a-c                | Matches all characters from a to c (case sensitive) |
-| Concatenation | ab                 | Matched exactly a followed by b                     |
-| Repetition    | a\*                | Matches the preceeding symbol 0 or more times.      |
 
 ---
 
@@ -299,12 +285,19 @@ Before we answer that, let's look into the basic notation of regular expressions
 | Name          | Syntax             | Explanation                                         |
 | ------------- | ------------------ | --------------------------------------------------- |
 | Symbol        | a, b, c, 0, 1 etc. | Matches the exact character                         |
-| Alternation   | [ab]               | Matches either a or b                               |
+| Alternation   | (hello\|hi)        | Matches either 'hello' or 'hi'                      |
+| Classes       | [ab1]              | Matches a single character that is a, b or 1        |
+| Negation      | [^ab]              | Matches any character other than a or b             |
 | Ranges        | [a-z]              | Matches all characters from a to z (case sensitive) |
 | Concatenation | ab                 | Matched exactly a followed by b                     |
 | Repetition    | a\*                | Matches the preceeding symbol 0 or more times.      |
 | Optional      | a?                 | Matches the preceeding symbol 0 or 1 times.         |
 | Wildcard      | \.                 | Matches any character (needs to be escaped)         |
+
+Something to keep in mind is that regexes still process each symbol one at a time, just like DFAs,
+so don't be intimidated by long and complex expressions.
+
+`[Hh]el[^a-km-z]o!?` still matches `Hello!` no matter how complex it is.
 
 ---
 
@@ -343,18 +336,149 @@ With these anchors we are able to refine the regex to `^[01]*0$` and this works 
 
 ![15](./regexr-even_binary_working.png)
 
+Debugging and refining this simple regex is a good reminder that this quote is not entirely
+humorous:
+
+> Some people, when confronted with a problem, think "I know, I'll use regular expressions." Now they have two problems.
+
 ---
 
 # Regex basics cont.
+## Numeric qualifiers
 
-Escaping characters
+| Syntax             | Explanation                                         |
+| ------------------ | --------------------------------------------------- |
+| a*                 | Matches a 0 or more times.                          |
+| a+                 | Matches a 1 or more times.                          |
+| a{1,2}             | Matches a 1 or 2 times.                             |
+| a{2,}              | Matches a 2 or more times.                          |
+| a{3}               | Matches a exactly 3 times.                          |
+| a?                 | Matches a 0 or 1 times.                             |
+| a*?                | Matches as few 'a's as possible (Non-greedy)        |
 
-Numeric quantifiers
 
-## Seem familiar?
+Things to note is that a lot of these are not strictly necessary, but help to make things more readable and convery intent better. aa* is the same as a+ but looks a lot worse.
+
+Non-greedy searches are a lot more useful than they seem:
+![15](./regexr-greedy_vs_non_greedy.png)
+
 
 ---
 
-# DFA Example: Phone numbers
+# Regex basics cont.
+## Special Classes
+
+| Syntax             | Explanation                                         |
+| ------------------ | --------------------------------------------------- |
+| \s                 | Matches a whitespace character (space, tab, newline)|
+| \S                 | Matches a non-whitespace character                  |
+| \w                 | Matches a word character [a-zA-Z0-9_]               |
+| \W                 | Matches a non-word character                        |
+| \d                 | Matches a digit character                           |
+| \D                 | Matches a non-digit character                       |
+
+All of these are just syntactical sugar to help you write more readable expressions.
 
 ---
+
+# Regex Example: Phone numbers
+
+With all of that still fresh in our brains let's try our hand at fuzzy matching SA phone numbers. We know that our cell phone numbers are 10 digits long. Any suggestions?
+
+---
+
+# Regex Example: Phone numbers
+
+With all of that still fresh in our brains let's try our hand at fuzzy matching SA phone numbers in text documents. We know that our cell phone numbers are 10 digits long. Any suggestions?
+
+![15](./regexr-cell_numbers_1.png)
+
+Done! Or are we?
+What about numbers in the form of xxx xxx xxxx? Let's add that to our text.
+
+---
+
+# Regex Example: Phone numbers
+
+![15](./regexr-cell_numbers_2.png)
+
+In general we would split phone numbers in the 3-3-4 pattern. Any younger people know why?
+
+---
+
+# Regex Example: Phone numbers
+
+![15](./regexr-cell_numbers_2.png)
+
+In general we would split phone numbers in the 3-3-4 pattern. Any younger people know why?
+
+![15](./regexr-cell_numbers_3.png)
+
+---
+
+# Regex Example: Phone numbers
+
+![15](./regexr-cell_numbers_4.png)
+
+How do we cater for this format?
+
+![15](./regexr-cell_numbers_5.png)
+
+---
+
+# Regex Example: Phone numbers
+
+![15](./regexr-cell_numbers_6.png)
+
+What about this one?
+
+![15](./regexr-cell_numbers_7.png)
+
+---
+
+# Regex Example: Phone numbers - Capture groups
+
+![15](./regexr-cell_numbers_7.png)
+
+If we used this regular expression in a program, how would we get the values of the first 3, second
+3 and last 4 digits?
+
+We can wrap sections in `()`. This tells the engine that you want to get the values of the matches
+string enclosed in the brackets. We can update our regex as follows:
+
+![15](./regexr-cell_numbers_8.png)
+
+---
+
+# Regex Example: Phone numbers - Capture groups
+
+![25](./regexr-cell_numbers_9.png)
+
+Here we can see that the engine has captured each of the groups for us so that we can extract it.
+
+Groups can also be named for ease of use `(?<name>...)`
+
+
+---
+
+# Regex - Capture groups
+
+A regex can also reference its own groups. The syntax is `\(n|name)`. An example of where this is
+useful is finding any repeated words in a document:
+
+![15](./regexr-capture_groups.png)
+
+---
+
+# Regex - Non-Capture groups
+
+Sometimes it is useful to group characters using parenthesis but not capture them. You can use a
+non-capturing group:
+
+![25](./regexr-non_capture_groups.png)
+
+---
+
+# How are DFAs and Regular expressions linked?
+
+To answer
