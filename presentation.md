@@ -19,7 +19,7 @@ styles:
 
 ---
 
-# Finite State Machines
+# Finite State Machines / Finite Automata
 
 - A Simple computational model
 - State represents the entirety of what is needed for the system to work
@@ -44,6 +44,13 @@ styles:
 - AI
 - Video Games
 - Control systems
+
+# What can't they be used for?
+
+- Inflexible state transitions
+- Storing state (ironically)
+  - Unsuitable for parsers
+- Systems with large amounts of states quickly become difficult to manage
 
 ---
 
@@ -124,7 +131,7 @@ syntax to make things easier to read:
 Let's try our new syntax on something more substantial. We can define a few DFAs for matching
 a tiny fictional language to start implementing a compiler:
 
-- If - Reserved word
+- if - Reserved word
 - Variable names/identifiers - Any sequence of letters and numbers starting with a letter (all lowercase for simplicity)
 - Numbers - Any sequence of digits starting with a digit
   - Reals - Numbers followed by "." and another sequence of digits.
@@ -148,27 +155,139 @@ with our DFAs combined we can try parsing `if a > 10.5`. One thing to mention is
 
 # **i**f a > 10.5
 
-![28](./lexer_combined-1.gv.png)
+![25](./lexer_combined-1.gv.png)
 
 Current State = B, which can be accepted as an ID.
+
+Stack = []
 
 ---
 
 # i**f** a > 10.5
 
-![28](./lexer_combined-2.gv.png)
+![25](./lexer_combined-2.gv.png)
 
 Current State = C, which can be accepted as an IF.
+
+Matches = []
 
 ---
 
 # if** **a > 10.5
 
-Now since the space doesn't match anything from C, we accept the token as an IF and start from A again.
+Now since the space doesn't match anything from C, we accept the token (adding it to the matches) as an IF and start from A again.
 
-![28](./lexer_combined-3.gv.png)
+![25](./lexer_combined-3.gv.png)
 
 Current State = K, which can be accepted as Whitespace.
+
+Matches = [IF]
+
+---
+
+# if **a** > 10.5
+
+We accept the whitespace and start again.
+
+![25](./lexer_combined-4.gv.png)
+
+Current State = D, which can be accepted as an ID.
+
+Matches = [IF, W/C]
+
+---
+
+# if a** **> 10.5
+
+We accept the identifier and start again.
+
+![25](./lexer_combined-3.gv.png)
+
+Current State = K, which can be accepted as Whitespace.
+
+Matches = [IF, W/C, ID]
+
+---
+
+# if a **>** 10.5
+
+We accept the whitespace and start again.
+
+![25](./lexer_combined-5.gv.png)
+
+Current State = L, which can be accepted as an ERR.
+
+Matches = [IF, W/C, ID, W/C]
+
+---
+
+# if a >** **10.5
+
+We accept the error (with a plan to throw it later) and start again.
+
+![25](./lexer_combined-3.gv.png)
+
+Current State = K, which can be accepted as Whitespace.
+
+Matches = [IF, W/C, ID, W/C, ERR]
+
+---
+
+# if a > **1**0.5
+
+We accept the whitespace and start again.
+
+![25](./lexer_combined-6.gv.png)
+
+Current State = E, which can be accepted as an INT.
+
+Matches = [IF, W/C, ID, W/C, ERR, W/C]
+
+---
+
+# if a > 1**0**.5
+
+![25](./lexer_combined-7.gv.png)
+
+Current State = E, which can be accepted as an INT.
+
+Matches = [IF, W/C, ID, W/C, ERR, W/C]
+
+---
+
+# if a > 10**.**5
+
+![25](./lexer_combined-8.gv.png)
+
+Current State = F, which can be accepted as an ERR.
+
+Matches = [IF, W/C, ID, W/C, ERR, W/C]
+
+---
+
+# if a > 10.**5**
+
+![25](./lexer_combined-9.gv.png)
+
+Current State = G, which can be accepted as a REAL. Since we've reached the end of the input we can stop processing.
+
+Matches = [IF, W/C, ID, W/C, ERR, W/C, REAL]
+
+---
+
+# Regular Languages
+
+From these examples we can see how state machines are great at matching strings. These DFAs can be used to represent any regular language. In fact, the definition of a regular
+language is as follows:
+
+- In formal language theory, a **language** is made up of **words**.
+- A **word** (string) is defined as one or more **symbols** from the **alphabet**.
+- A **regular language** is one that can be recognized by a finite automata.
+
+## Okay but why do we care?
+- A **regular expression** is a notation to describe a set of **words** in a **language**.
+- If a **language** can be defined by a **regular expresssion** then it is a **regular language**.
+- This means that there must be a link between regular expressions and finite automata, right?
 
 ---
 

@@ -8,16 +8,16 @@ digraph lexer_separate {
     node [shape = circle];
 
     Start -> A;
-    A -> B [label = "i" color="green"];
-    B -> C [label = "f" color="green"];
+    A -> B [label = "i"];
+    B -> C [label = "f"];
     B -> D [label = "a-e, g-z or 0-9"];
     C -> D [label = "a-z or 0-9"];
     D -> D [label = "a-z"];
     D -> D [label = "0-9"];
     A -> D [label = "a-h or j-z"];
-    A -> E [label = "0-9"];
-    E -> E [label = "0-9"];
-    E -> F [label = "."];
+    A -> E [label = "0-9" color="green"];
+    E -> E [label = "0-9" color="green"];
+    E -> F [label = "." color="green"];
     F -> G [label = "0-9"];
     G -> G [label = "0-9"];
     A -> H [label = "/"];
@@ -29,10 +29,10 @@ digraph lexer_separate {
     A -> L [label = "other"];
     Start [shape = none label = "Start"]; 
     B [xlabel="ID"];
-    C [xlabel="IF" color="green"];
+    C [xlabel="IF"];
     D [xlabel="ID"];
     E [xlabel="INT"];
-    F [xlabel="ERR"];
+    F [xlabel="ERR" color="green"];
     G [xlabel="REAL"];
     H [xlabel="ERR"];
     J [xlabel="W/C"];
