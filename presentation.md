@@ -31,7 +31,7 @@ styles:
 
 ## Vending Machine Example:
 
-![15](./fsm_example.gv.png)
+![15](graphs/fsm_example.gv.png)
 
 ---
 
@@ -81,7 +81,7 @@ As an example we have a DFA that matches all even binary numbers (eg. 0, 10, 110
 `F` = [B]
 
 Drawn as:
-![15](./even_binary_dfa-1.gv.png)
+![15](graphs/even_binary_dfa-1.gv.png)
 
 Let's go through what happens when that DFM is fed an input of `1010`.
 
@@ -89,25 +89,25 @@ Let's go through what happens when that DFM is fed an input of `1010`.
 
 ## **1**010
 
-![25](./even_binary_dfa-2.gv.png)
+![25](graphs/even_binary_dfa-2.gv.png)
 
 ---
 
 ## 1**0**10
 
-![25](./even_binary_dfa-3.gv.png)
+![25](graphs/even_binary_dfa-3.gv.png)
 
 ---
 
 ## 10**1**0
 
-![25](./even_binary_dfa-4.gv.png)
+![25](graphs/even_binary_dfa-4.gv.png)
 
 ---
 
 ## 101**0**
 
-![25](./even_binary_dfa-5.gv.png)
+![25](graphs/even_binary_dfa-5.gv.png)
 
 ---
 
@@ -123,7 +123,7 @@ a tiny fictional programming language to start implementing a compiler:
 - Whitespace/Comments - Essentially ignored by the compiler
 - Errors - Invalid syntax
 
-![25](./lexer_separate.gv.png)
+![25](graphs/lexer_separate.gv.png)
 
 ---
 
@@ -132,7 +132,7 @@ a tiny fictional programming language to start implementing a compiler:
 Something really cool we can do with DFAs is combine them. We can combine the 5 regexes from last
 slide into this:
 
-![28](./lexer_combined.gv.png)
+![28](graphs/lexer_combined.gv.png)
 
 with our DFAs combined we can try parsing `if a > 10.5`. One thing to mention is that we will always try to match as long of a string as possible.
 
@@ -140,7 +140,7 @@ with our DFAs combined we can try parsing `if a > 10.5`. One thing to mention is
 
 # **i**f a > 10.5
 
-![25](./lexer_combined-1.gv.png)
+![25](graphs/lexer_combined-1.gv.png)
 
 Current State = B, which can be accepted as an ID.
 
@@ -150,7 +150,7 @@ Stack = []
 
 # i**f** a > 10.5
 
-![25](./lexer_combined-2.gv.png)
+![25](graphs/lexer_combined-2.gv.png)
 
 Current State = C, which can be accepted as an IF.
 
@@ -162,7 +162,7 @@ Matches = []
 
 Now since the space doesn't match anything from C, we accept the token (adding it to the matches) as an IF and start from A again.
 
-![25](./lexer_combined-3.gv.png)
+![25](graphs/lexer_combined-3.gv.png)
 
 Current State = K, which can be accepted as Whitespace.
 
@@ -174,7 +174,7 @@ Matches = [IF]
 
 We accept the whitespace and start again.
 
-![25](./lexer_combined-4.gv.png)
+![25](graphs/lexer_combined-4.gv.png)
 
 Current State = D, which can be accepted as an ID.
 
@@ -186,7 +186,7 @@ Matches = [IF, W/C]
 
 We accept the identifier and start again.
 
-![25](./lexer_combined-3.gv.png)
+![25](graphs/lexer_combined-3.gv.png)
 
 Current State = K, which can be accepted as Whitespace.
 
@@ -198,7 +198,7 @@ Matches = [IF, W/C, ID]
 
 We accept the whitespace and start again.
 
-![25](./lexer_combined-5.gv.png)
+![25](graphs/lexer_combined-5.gv.png)
 
 Current State = L, which can be accepted as an ERR.
 
@@ -210,7 +210,7 @@ Matches = [IF, W/C, ID, W/C]
 
 We accept the error (with a plan to throw it later) and start again.
 
-![25](./lexer_combined-3.gv.png)
+![25](graphs/lexer_combined-3.gv.png)
 
 Current State = K, which can be accepted as Whitespace.
 
@@ -222,7 +222,7 @@ Matches = [IF, W/C, ID, W/C, ERR]
 
 We accept the whitespace and start again.
 
-![25](./lexer_combined-6.gv.png)
+![25](graphs/lexer_combined-6.gv.png)
 
 Current State = E, which can be accepted as an INT.
 
@@ -232,7 +232,7 @@ Matches = [IF, W/C, ID, W/C, ERR, W/C]
 
 # if a > 1**0**.5
 
-![25](./lexer_combined-7.gv.png)
+![25](graphs/lexer_combined-7.gv.png)
 
 Current State = E, which can be accepted as an INT.
 
@@ -242,7 +242,7 @@ Matches = [IF, W/C, ID, W/C, ERR, W/C]
 
 # if a > 10**.**5
 
-![25](./lexer_combined-8.gv.png)
+![25](graphs/lexer_combined-8.gv.png)
 
 Current State = F, which can be accepted as an ERR.
 
@@ -252,7 +252,7 @@ Matches = [IF, W/C, ID, W/C, ERR, W/C]
 
 # if a > 10.**5**
 
-![25](./lexer_combined-9.gv.png)
+![25](graphs/lexer_combined-9.gv.png)
 
 Current State = G, which can be accepted as a REAL. Since we've reached the end of the input we can stop processing.
 
