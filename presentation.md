@@ -111,32 +111,17 @@ Let's go through what happens when that DFM is fed an input of `1010`.
 
 ---
 
-# Some syntax for the next few examples
-
-When showing the input that transition functions accept going forward, we can use the following
-syntax to make things easier to read:
-
-| Name          | Syntax             | Explanation                                         |
-| ------------- | ------------------ | --------------------------------------------------- |
-| Symbol        | a, b, c, 0, 1 etc. | Matches the exact character\*                       |
-| Alternation   | a\|b               | Matches either a or b                               |
-| Ranges        | a-c                | Matches all characters from a to c (case sensitive) |
-| Concatenation | ab                 | Matched exactly a followed by b                     |
-| Repetition    | a\*                | Matches the preceeding symbol 0 or more times.      |
-
----
-
 # DFA Example: Lex tokens
 
-Let's try our new syntax on something more substantial. We can define a few DFAs for matching
-a tiny fictional language to start implementing a compiler:
+For the next example we'll be using ranges of characters. An example is a-c which is all characters from a to c (inclusive). We can define a few DFAs for matching
+a tiny fictional programming language to start implementing a compiler:
 
 - if - Reserved word
 - Variable names/identifiers - Any sequence of letters and numbers starting with a letter (all lowercase for simplicity)
-- Numbers - Any sequence of digits starting with a digit
+- Integers - Any sequence of digits starting with a digit
   - Reals - Numbers followed by "." and another sequence of digits.
 - Whitespace/Comments - Essentially ignored by the compiler
-- Error states - Invalid syntax
+- Errors - Invalid syntax
 
 ![25](./lexer_separate.gv.png)
 
@@ -291,15 +276,72 @@ language is as follows:
 
 ---
 
+
+# Some syntax for the next few examples
+
+When showing the input that transition functions accept going forward, we can use the following
+syntax to make things easier to read:
+
+| Name          | Syntax             | Explanation                                         |
+| ------------- | ------------------ | --------------------------------------------------- |
+| Symbol        | a, b, c, 0, 1 etc. | Matches the exact character\*                       |
+| Alternation   | a\|b               | Matches either a or b                               |
+| Ranges        | a-c                | Matches all characters from a to c (case sensitive) |
+| Concatenation | ab                 | Matched exactly a followed by b                     |
+| Repetition    | a\*                | Matches the preceeding symbol 0 or more times.      |
+
+---
+
 # Regex basics
 
-Character classes
+Before we answer that, let's look into the basic notation of regular expressions:
 
-Range
+| Name          | Syntax             | Explanation                                         |
+| ------------- | ------------------ | --------------------------------------------------- |
+| Symbol        | a, b, c, 0, 1 etc. | Matches the exact character                         |
+| Alternation   | [ab]               | Matches either a or b                               |
+| Ranges        | [a-z]              | Matches all characters from a to z (case sensitive) |
+| Concatenation | ab                 | Matched exactly a followed by b                     |
+| Repetition    | a\*                | Matches the preceeding symbol 0 or more times.      |
+| Optional      | a?                 | Matches the preceeding symbol 0 or 1 times.         |
+| Wildcard      | \.                 | Matches any character (needs to be escaped)         |
 
-. (dot)
+---
 
-Word, digit, and space classes
+# Regex Example - Even binary numbers
+
+The previous example of all even binary numbers can be represented by this regular expression:
+`[01]*0`
+
+In reality, not so much. We are matching more than we should be. See this test as an example:
+
+![15](./regexr-even_binary_no_bounds_checks.png)
+
+Here we can start seeing the difficulties with working with regexes. You need to be really specific.
+
+---
+
+We could concatenate a `\n` to the end of the regex, but that will cause issues for the last row of
+text as there is no newline character there, so we fail to match that:
+
+![15](./regexr-even_binary_newline.png)
+
+What we're missing is some more notation to define word and line bounds.
+
+These are called anchors and defined as follows:
+
+| Symbol             | Explanation                                                |
+| ------------------ | ---------------------------------------------------------- |
+| ^                  | Matches the beginning of a string or line (multiline)      |
+| $                  | Matches the end of a string or line (multiline)            |
+| \b                 | Matches the boundary between a word and non word character |
+
+
+---
+
+With these anchors we are able to refine the regex to `^[01]*0$` and this works as expected!
+
+![15](./regexr-even_binary_working.png)
 
 ---
 
