@@ -56,13 +56,13 @@ not being accepted that are not shown.
 
 # What can they be used for?
 
-- String processing and matching
-  - Compilers
-- UIs
 - E-commerce
 - AI
 - Video Games
 - Control systems
+- String processing and matching
+  - Compilers
+- UIs
 
 # What can't they be used for?
 
@@ -165,7 +165,7 @@ with our DFAs combined we can try parsing `if a > 10.5`. One thing to mention is
 
 Current State = B, which can be accepted as an ID.
 
-Stack = []
+Matches = []
 
 ---
 
