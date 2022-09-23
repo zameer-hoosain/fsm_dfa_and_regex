@@ -1,0 +1,14 @@
+digraph uber_eats_finite_state_machine {
+	fontname="Helvetica,Arial,sans-serif"
+	node [fontname="Helvetica,Arial,sans-serif"]
+	edge [fontname="Helvetica,Arial,sans-serif"]
+	rankdir=LR;
+	node [shape = doublecircle]; Completed;
+	node [shape = circle];
+	Start -> "Awaiting confirmation" [label = "Order received"];
+	"Awaiting confirmation" -> "Preparing order" [label = "Order confirmed"];
+	"Preparing order" -> "Order ready" [label = "Order completed"];
+	"Order ready" -> "Driver on the way" [label = "Order collected"];
+	"Driver on the way" -> "Driver has arrived" [label = "Arrived at door"];
+	"Driver has arrived" -> Completed [label = "Order delivered"];
+}

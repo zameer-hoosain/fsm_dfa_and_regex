@@ -45,6 +45,15 @@ styles:
 
 ---
 
+# Uber Eats Example:
+
+![20](graphs/ue_example.gv.png)
+
+This is designed to have an end state. There are other states such as failed delivery or not orders
+not being accepted that are not shown.
+
+---
+
 # What can they be used for?
 
 - String processing and matching
