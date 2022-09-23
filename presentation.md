@@ -15,7 +15,16 @@ styles:
     bottom: 3
 ---
 
+---
+
 # Introduction
+
+- Today we will be talking about:
+    - Finite state machines
+    - Types of FSMs
+    - Formal language theory
+    - Regular languages
+    - Regular expressions
 
 ---
 
@@ -25,6 +34,7 @@ styles:
 - State represents the entirety of what is needed for the system to work
 - Finite number of states
 - One start state
+- The machine only has enough memory to store which state we are in
 - States are connected using transitions
 - May have one or more "accepting/terminating" states
   - Not a requirement for machines designed to run indefinitely
@@ -56,7 +66,7 @@ styles:
 
 # String processing with DFAs
 
-- Deterministic Finite Automata (DFA) are simple Finite State Machines
+- Deterministic Finite Automata (DFA) are types of Finite State Machines
 - They are deterministic because they can only transition to one state for a given input.
   - Differ from NFAs in thie respect
 - In a DFA a system can only exist in a single state at a time
@@ -269,7 +279,7 @@ language is as follows:
 
 - In formal language theory, a **language** is made up of **words**.
 - A **word** (string) is defined as one or more **symbols** from the **alphabet**.
-- A **regular language** is one that can be recognized by a finite automata.
+- A **regular language** is one that can be recognised by a finite automata.
 
 ## Okay, but why do we care?
 - A **regular expression** is a notation to describe a set of **words** in a **language**.
@@ -292,7 +302,7 @@ Before we answer that, let's look into the basic notation of regular expressions
 | Concatenation | ab                 | Matched exactly a followed by b                     |
 | Repetition    | a\*                | Matches the preceeding symbol 0 or more times.      |
 | Optional      | a?                 | Matches the preceeding symbol 0 or 1 times.         |
-| Wildcard      | \.                 | Matches any character (needs to be escaped)         |
+| Wildcard      | \.                 | Matches any character                               |
 
 Something to keep in mind is that regexes still process each symbol one at a time, just like DFAs,
 so don't be intimidated by long and complex expressions.
@@ -303,7 +313,7 @@ so don't be intimidated by long and complex expressions.
 
 # Regex Example - Even binary numbers
 
-The previous example of all even binary numbers can be represented by this regular expression:
+The previous example of all even binary numbers can theoretically be represented by this regular expression:
 `[01]*0`
 
 In reality, not so much. We are matching more than we should be. See this test as an example:
@@ -327,7 +337,6 @@ These are called anchors and defined as follows:
 | ------------------ | ---------------------------------------------------------- |
 | ^                  | Matches the beginning of a string or line (multiline)      |
 | $                  | Matches the end of a string or line (multiline)            |
-| \b                 | Matches the boundary between a word and non word character |
 
 
 ---
@@ -368,14 +377,15 @@ Non-greedy searches are a lot more useful than they seem:
 # Regex basics cont.
 ## Special Classes
 
-| Syntax             | Explanation                                         |
-| ------------------ | --------------------------------------------------- |
-| \s                 | Matches a whitespace character (space, tab, newline)|
-| \S                 | Matches a non-whitespace character                  |
-| \w                 | Matches a word character [a-zA-Z0-9_]               |
-| \W                 | Matches a non-word character                        |
-| \d                 | Matches a digit character                           |
-| \D                 | Matches a non-digit character                       |
+| Syntax             | Explanation                                                |
+| ------------------ | ---------------------------------------------------------- |
+| \s                 | Matches a whitespace character (space, tab, newline)       |
+| \S                 | Matches a non-whitespace character                         |
+| \w                 | Matches a word character [a-zA-Z0-9_]                      |
+| \W                 | Matches a non-word character                               |
+| \d                 | Matches a digit character                                  |
+| \D                 | Matches a non-digit character                              |
+| \b                 | Matches the boundary between a word and non word character |
 
 All of these are just syntactical sugar to help you write more readable expressions.
 
@@ -452,7 +462,7 @@ string enclosed in the brackets. We can update our regex as follows:
 
 # Regex Example: Phone numbers - Capture groups
 
-![25](./regexr-cell_numbers_9.png)
+![27](./regexr-cell_numbers_9.png)
 
 Here we can see that the engine has captured each of the groups for us so that we can extract it.
 
@@ -481,4 +491,37 @@ non-capturing group:
 
 # How are DFAs and Regular expressions linked?
 
-To answer
+DFAs have cousins called NFAs. Non-deterministic finite automata are useful because it's easy to
+go from regular expressions (static, declarative) to NFAs (simulatable, "executable") with a few
+simple rules. Keep in mind that in a NFA it is possible to have multiple transitions accepting the same character or set of characters from a given state. These are simple rules of thumb to help with the conversions:
+
+- Translate everything into its most descriptive form
+    - a+ becomes aa*
+- Concatenations (`ab`) become successive transitions.
+- Alternations (`a|b`) become branching transitions. Character classes work similarly.
+- Repetitions (`a*`) become loops from a state to itself
+
+At the end you will end up with a rough NFA. Going from a NFA to a DFA is a lot more complex and
+involves a bunch of math that we don't have time for today (speak to me). DFAs are perfect for
+computing as computers cannot guess which branch will lead to the best result, but if you just need
+to do some rough working, then NFAs work fine.
+
+---
+
+# Where to go from here?
+
+Regexes are much deeper than what we've discussed here. There are various topics that we have not
+even covered such as lookaheads, lookbehinds, subpatterns, meta character overloads, flags and implementation specifics. If this has
+interested you at all, then I would suggest you dive deeper. There are lots of resources online to
+help with understanding a given regex or explaining the general concepts in depth. Some of my
+favourites are:
+
+- [https://regexr.com/](https://regexr.com/) - This is what I used to prepare the regex screenshots for these slides
+- [https://regex101.com/](https://regex101.com/)
+- [https://regexper.com/](https://regexper.com/) - Visualizes regular expressions as railroad diagrams
+- Mastering Regular Expressions by Jeffrey Friedl
+
+Regexr also has some community solutions to common problems such as email validation, password
+validation and lots more.
+
+I hope you've enjoyed the talk and I look forward to seeing some cool regexes in tech huddle.
